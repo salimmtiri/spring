@@ -22,7 +22,8 @@
 
   <!-- PLUGINS CSS STYLE -->
   <link href="plugins/nprogress/nprogress.css" rel="stylesheet" />
-  
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+
   <!-- MONO CSS -->
   <link id="main-css-href" rel="stylesheet" href="css/style.css" />
 
@@ -31,18 +32,45 @@
 
   <!-- FAVICON -->
   <link href="images/favicon.png" rel="shortcut icon" />
+  <script src="plugins/jquery/jquery.min.js"></script>
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-  <!--
-    HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
-  -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
   <script src="plugins/nprogress/nprogress.js"></script>
 </head>
-
+  <!-- Ajoutez ce style dans votre fichier CSS ou dans une balise style -->
+  <style>
+    .dropdown-toggle::after {
+        display: none;
+    }
+    
+    .dropdown-toggle {
+        color: #8a909d;
+        padding: 0.5rem;
+    }
+    
+    .dropdown-toggle:hover {
+        color: #4c84ff;
+    }
+    
+    .dropdown-menu {
+        box-shadow: 0 2px 8px rgba(0,0,0,.1);
+        border: 1px solid #eee;
+    }
+    
+    .dropdown-item {
+        padding: .5rem 1.5rem;
+        display: flex;
+        align-items: center;
+    }
+    
+    .dropdown-item:hover {
+        background-color: #f8f9fa;
+    }
+    
+    .dropdown-divider {
+        margin: .5rem 0;
+    }
+    </style>
 
   <body class="navbar-fixed sidebar-fixed" id="body">
     <script>
@@ -1335,48 +1363,64 @@
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-add-contact"> Add Contact
     </button>
   </div>
+ 
 
   <div class="card-body px-3 px-md-5">
     <div class="row">
-      
-      
-
       <div class="col-lg-6 col-xl-4" th:each="Myuser : ${myusers}">
         <div class="card card-default p-4">
-          
-        
-          <a href="javascript:0" class="media text-secondary"   th:onclick="'openUserModal(\'' + ${Myuser.id} + '\');'" >
-            <img th:src="@{${Myuser.image}}"  class="mr-3 img-fluid rounded" alt="Avatar Image">
-
-            <div class="media-body">
-              <h5 class="mt-0 mb-2 text-dark" th:text="${Myuser.name + ' ' + Myuser.username}"  ></h5>
-              <a class="btn btn-primary btn-pill btn-lg my-4" 
-              th:href="@{/employee/edit/{id}(id=${Myuser.id})}">
-               Modifier
-           </a>
-
-              <ul class="list-unstyled text-smoke">
-                <li class="d-flex">
-                  <i class="mdi mdi-map mr-1"></i>
-                  <span>Nulla vel metus 15/178</span>
-                </li>
-                <li class="d-flex">
-                  <i class="mdi mdi-email mr-1"></i>
-                  <span>exmaple@email.com</span>
-                </li>
-                <li class="d-flex">
-                  <i class="mdi mdi-phone mr-1"></i>
-                  <span>(123) 888 777 632</span>
-                </li>
-              </ul>
+          <!-- Ajout de la classe position-relative pour le positionnement du dropdown -->
+          <div class="position-relative">
+            <!-- Dropdown Menu en position absolue -->
+            <div class="position-absolute" style="top: 0; right: 0; z-index: 10;">
+              <div class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                  <i class="mdi mdi-dots-vertical"></i>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item"  th:href="@{/employee/edit/{id}(id=${Myuser.id})}">
+                    <i class="mdi mdi-pencil mr-2"></i>
+                    <span>Edit</span>
+                  </a>
+                 
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item text-danger" href="#" 
+                     onclick="return confirm('Voulez-vous vraiment supprimer cet utilisateur ?')" 
+                     th:href="@{/employee/delete/{id}(id=${Myuser.id})}" >
+                    <i class="mdi mdi-delete mr-2"></i>
+                    <span>Delete</span>
+                  </a>
+                </div>
+              </div>
             </div>
-          </a>
+  
+            <!-- Contenu de la carte -->
+            <a href="javascript:void(0)" class="media text-secondary" th:onclick="'openUserModal(\'' + ${Myuser.id} + '\');'">
+              <img th:src="@{${Myuser.image}}" class="mr-3 img-fluid rounded" alt="Avatar Image">
+              <div class="media-body">
+                <h5 class="mt-0 mb-2 text-dark" th:text="${Myuser.name + ' ' + Myuser.username}"></h5>
+                <ul class="list-unstyled text-smoke">
+                  <li class="d-flex">
+                    <i class="mdi mdi-map mr-1"></i>
+                    <span>Nulla vel metus 15/178</span>
+                  </li>
+                  <li class="d-flex">
+                    <i class="mdi mdi-email mr-1"></i>
+                    <span>exmaple@email.com</span>
+                  </li>
+                  <li class="d-flex">
+                    <i class="mdi mdi-phone mr-1"></i>
+                    <span>(123) 888 777 632</span>
+                  </li>
+                </ul>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
     </div>
   </div>
-</div>
-
+  
 
 <!-- Contact Modal -->
 <div class="modal fade" id="modal-contact" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
